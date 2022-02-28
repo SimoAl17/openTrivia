@@ -8,7 +8,23 @@
     <title>Quizzoteca</title>
 </head>
 <body>
-    <h1 class="main-title">Piano della conquista del mondo</h1>
+    <h1 class="main-title">The best quiz of your life</h1>
+    <div>
+        <select id="categories-select">
+            <option value="">ALL</option>
+        </select>
+            
+        <select id="difficulty-select">
+            <option value="">ALL</option>
+        </select>
+        
+        <select id="type-select">
+            <option value="">ALL</option>
+        </select>
+        
+        <button onclick="loadTrivia()">Generate Questions</button>
+    </div>
+
     <ul id="trivia-list">
 
     </ul>
@@ -17,6 +33,6 @@
 <script src="./trivia.js"></script>
 <script src="./script.js"></script>
 <script>
-    loadTrivia();
+    initQuiz();
 </script>
 </html>

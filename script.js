@@ -1,8 +1,60 @@
+function loadCategories() {
+    fetch('https://opentdb.com/api_category.php')
+        .then(resp => resp.json())
+        .then((data) => createSelect(data.trivia_categories, 'categories-select'))
+        .catch(err => console.log(err));
+}
+
+function loadDifficulty() {
+    fetch('./difficulty.json')
+        .then(resp => resp.json())
+        .then((data) => createSelect(data, 'difficulty-select'))
+        .catch(err => console.log(err));
+}
+
+function loadType() {
+    fetch('./type.json')
+        .then(resp => resp.json())
+        .then((data) => createSelect(data, 'type-select'))
+        .catch(err => console.log(err));
+}
+
+function createSelect(data, select) {
+    const selection = document.getElementById(select);
+    for (const element of data) {
+        const option = document.createElement('option');
+        option.value = element.id;
+        const textNode = document.createTextNode(element.name);
+        option.appendChild(textNode);
+        selection.appendChild(option);
+    }
+}
+
+function initQuiz() {
+    loadCategories();
+    loadDifficulty();
+    loadType();
+}
+
+
 function loadTrivia() {
-    fetch('https://opentdb.com/api.php?amount=15')
+    let category = document.getElementById('categories-select').value;
+    let difficulty = document.getElementById('difficulty-select').value;
+    let type = document.getElementById('type-select').value;
+    let stringURL = 'https://opentdb.com/api.php?amount=15';
+    if (category) {
+        stringURL += "&category=" + category;
+    }
+    if (difficulty) {
+        stringURL += "&difficulty=" + difficulty;
+    }
+    if (type) {
+        stringURL += "&type=" + type;
+    }
+    fetch(stringURL)
         .then(resp => resp.json())
         .then(createTrivias)
-        .catch(err => console.log(err));
+        .then(err => console.log(err))
 }
 
 function createTrivias(data) {
@@ -20,6 +72,8 @@ function createTrivias(data) {
 
 function displayTrivia(triviaArray){
     const list = document.getElementById('trivia-list');
+
+    list.innerHTML = "";
 
     for (const trivia of triviaArray) {
         let liElement = createTriviaListElement(trivia)
